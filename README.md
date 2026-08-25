@@ -1,88 +1,115 @@
 # Scientific Calculator
 
-A responsive, browser-based scientific calculator with an expression editor, advanced mathematical tools, calculation history, memory registers, visual matrix/vector input, desktop keyboard support, and a glass-inspired interface.
+A responsive browser-based **scientific calculator** with a glass-inspired interface, a direct expression editor, a persistent calculation history, visual matrix and vector inputs, and desktop keyboard controls. It is built with HTML, Tailwind CSS, and modular JavaScript; expression evaluation is powered by [Math.js][1].
 
-The application is implemented with **HTML, Tailwind CSS, and modular JavaScript**. Mathematical expression parsing and advanced numerical operations are provided by **Math.js**.
+## Screenshots
 
-## Overview
+### Desktop scientific workspace
 
-The calculator is designed to work in three complementary contexts. On compact phones, the keypad remains hidden until the result display is tapped, keeping the scientific workspace uncluttered. On tablets and desktop screens, the full scientific workspace is expanded beside the utility controls and keypad. Calculation history, settings, variables, and user interface preferences persist locally in the browser when storage is available.
+![Desktop scientific calculator showing the full functions panel beside the primary keypad.](https://raw.githubusercontent.com/khalidhasan-m/scientific-calculator/main/docs/images/desktop-workspace.png)
 
-| Area | What it provides |
+The desktop workspace keeps the expression display, the full scientific-function panel, and the primary keypad visible together.
+
+### Compact mobile workspace
+
+![Compact mobile calculator showing the History control, result display, Show keypad button, and Show functions control.](https://raw.githubusercontent.com/khalidhasan-m/scientific-calculator/main/docs/images/mobile-workspace.png)
+
+On compact screens, the keypad remains hidden until the result display or **Show keypad** control is used. This leaves the scientific workspace reachable without crowding the initial view.
+
+## Highlights
+
+| Area | Included capability |
 | --- | --- |
-| Expression editor | Direct entry of arithmetic and supported Math.js expressions. Press **Enter** to evaluate. |
-| Scientific workspace | Tabbed functions, memory, data/statistics, and algebra/matrix tools. |
-| Keypad | Number entry, operators, parenthesis, sign toggle, fraction-display toggle, delete, and active-calculation reset controls. |
-| History drawer | Previous expressions and results, reusable expressions, press-and-hold result copying, and complete history clearing. |
-| Responsive behavior | Compact display-triggered keypad on phones; full, non-collapsed scientific layout on tablets and desktops. |
+| Expression editor | Direct entry of arithmetic and supported Math.js expressions with normal operator precedence. |
+| Scientific tools | Trigonometric, inverse, hyperbolic, logarithmic, exponential, probability, calculus, and coordinate operations. |
+| Memory and constants | `Ans`, memory register `M`, named registers `A`–`F`, `X`, `Y`, and physical constants. |
+| Data and bases | Mean, standard deviation, summation, plus DEC, BIN, OCT, and HEX output modes. |
+| Algebra | Complex values and visual 2×2 / 3×3 matrix and 2D / 3D vector editors. |
+| History | Browser-persisted calculation tape; tap an entry to restore its expression or press and hold to copy its result. |
+| Responsive interaction | Display-triggered mobile keypad, a compact scientific toggle, desktop keyboard shortcuts, and light/dark themes. |
 
-## Features
+## Installation
 
-### Core calculation
+Use a current Node.js release and npm.
 
-The expression editor accepts standard arithmetic, parentheses, powers, decimal values, percentages, scientific notation, and supported Math.js functions. The calculator follows normal arithmetic precedence and displays errors for invalid or undefined operations.
+```bash
+git clone https://github.com/khalidhasan-m/scientific-calculator.git
+cd scientific-calculator
+npm install
+```
 
-The **AC** control resets the expression to `0`, clears the displayed answer, and resets active output formatting to automatic decimal mode. It intentionally preserves saved calculation history, memory, and named variable registers.
+Start the local development server:
 
-| Control | Behavior |
+```bash
+npm run dev
+```
+
+Vite prints the local URL after startup. Open that address in a modern browser to use the calculator.
+
+## Commands
+
+| Command | Purpose |
 | --- | --- |
-| `AC` | Clears the active expression, result, answer value, and output mode while preserving saved history. |
-| `DEL` | Deletes the selected content or the character before the caret. |
-| `±` | Wraps the active expression as a negated value. |
-| `a/b` | Toggles fraction-oriented result display when available. |
-| `ENG` | Toggles engineering notation for the result display. |
-| `Ans` | Inserts the most recently calculated answer. |
+| `npm run dev` | Starts the Vite development server on all local interfaces. |
+| `npm run build` | Creates an optimized production client bundle in `dist/`. |
+| `npm run preview` | Opens a local Vite preview of the production client build. |
 
-### Scientific functions
+For a production-style local run:
 
-The **Functions** tab covers trigonometric, inverse trigonometric, hyperbolic, inverse hyperbolic, exponent, root, logarithmic, probability, random, numerical calculus, and coordinate-conversion tools.
+```bash
+npm run build
+npm run preview
+```
 
-| Category | Included operations |
-| --- | --- |
-| Trigonometry | `sin`, `cos`, `tan`, `cot`, inverse functions, and DEG/RAD/GRAD angle modes. |
-| Hyperbolics | `sinh`, `cosh`, `tanh`, `asinh`, `acosh`, and `atanh`. |
-| Powers and roots | Square, cube, arbitrary power, reciprocal, square root, and n-th root. |
-| Logarithms and exponentials | Base-10 log, natural log, arbitrary-base log, `10^x`, and `e^x`. |
-| Probability | Factorial, permutations, combinations, absolute value, random decimal, and random integer generation. |
-| Numerical tools | Definite integration and numerical differentiation expressions. |
-| Coordinate tools | Polar-to-rectangular and rectangular-to-polar conversion expressions. |
+## Using the calculator
 
-### Memory, registers, constants, and statistics
+Enter an expression with the keypad or the expression editor, then press **=** or `Enter`. The calculator preserves normal arithmetic precedence and supports parentheses. The **AC** key resets the active calculation without deleting saved history. Use the **Clear** action inside the History drawer only when you intend to remove stored history entries.
 
-The **Memory** tab supports `M+`, `M−`, memory recall, answer insertion, and named registers: `A`, `B`, `C`, `D`, `E`, `F`, `X`, and `Y`. It also exposes common constants including `π`, `e`, the speed of light constant, and Planck’s constant.
+> **History gestures:** Tap a history row to restore the original expression. Press and hold the same row to copy only its result.
 
-The **Data** tab stores single-variable data points and provides mean, standard deviation, summation, and display-base controls for decimal, binary, octal, and hexadecimal output.
+## Supported scientific functions
 
-### Algebra, complex numbers, matrices, and vectors
+The table below documents the built-in controls and expression helpers available from the calculator interface. Standard Math.js functions that are compatible with the active expression scope are also evaluated by the underlying engine.[1]
 
-The **Algebra** tab provides complex-number entry and real/imaginary-part helpers. It also includes two visual editors:
+### Arithmetic, powers, roots, and display modes
 
-| Editor | Capabilities |
-| --- | --- |
-| Matrix editor | 2×2 or 3×3 matrix entry with insertion, determinant, and inverse actions. |
-| Vector editor | 2D or 3D vector components with dot product, cross product, addition, and subtraction actions. |
+| Category | Supported controls and expressions | Notes |
+| --- | --- | --- |
+| Core arithmetic | `+`, `-`, `*`, `/`, `%`, `(`, `)`, `±`, `Ans` | Supports precedence, nested parentheses, percent insertion, and answer recall. |
+| Powers | `x²`, `x³`, `xʸ`, `10ˣ`, `eˣ` | Inserted as `^2`, `^3`, `^`, `10^`, and `exp(`. |
+| Roots and reciprocal | `√`, `ⁿ√`, `x⁻¹` | Uses `sqrt(`, `nthRoot(`, and inverse-power entry. |
+| Logs | `log`, `ln`, `logₐ` | Uses `log(`, `ln(`, and `logBase(`. |
+| Result formats | `a/b`, `ENG`, DEC / BIN / OCT / HEX | Switches result presentation; base conversion applies to finite integer results. |
 
-Each visual editor creates a valid calculator expression and inserts it at the active expression cursor, ready for inspection or evaluation.
+### Trigonometric and hyperbolic functions
 
-## History and persistence
+| Category | Supported functions | Angle behavior |
+| --- | --- | --- |
+| Trigonometric | `sin`, `cos`, `tan`, `cot` | Uses the active **DEG**, **RAD**, or **GRAD** mode. |
+| Inverse trigonometric | `asin`, `acos`, `atan`, `acot` | Returns values using the active angle mode. |
+| Hyperbolic | `sinh`, `cosh`, `tanh` | Evaluated as real-valued hyperbolic functions. |
+| Inverse hyperbolic | `asinh`, `acosh`, `atanh` | Available from the Functions panel. |
 
-The History button opens a slide-out calculation tape. Tap a row to restore its earlier expression in the editor, or press and hold it to copy its result while preserving the active expression. The **Clear** button inside the history drawer is the only control that deletes saved history; **AC** resets only the active calculation state.
+### Probability, statistics, and numerical tools
 
-The application uses browser local storage when available for history, statistics, memory, named variables, angle mode, theme preference, and scientific-panel visibility. If storage is unavailable, the calculator remains usable for the current browser session without persistence.
+| Category | Supported functions and controls | Example |
+| --- | --- | --- |
+| Combinatorics | `nPr(n, r)`, `nCr(n, r)`, `n!` | `nCr(8, 2)` |
+| Random values | `Ran#`, `RanInt` | Generates a random decimal or an integer from `0` to `99`. |
+| Absolute value | `abs(` | `abs(-42)` |
+| Single-variable statistics | Add data, Mean, `σ`, `Σ` | Store data values, then calculate mean, standard deviation, or sum. |
+| Numerical calculus | `integral("formula", a, b)`, `diff("formula", x)` | `integral("x^2", 0, 1)` or `diff("x^2", 2)` |
+| Coordinate conversion | `polar(x, y)`, `rect(radius, theta)` | Uses the active angle mode for the angle component. |
 
-## Responsive interaction model
+### Memory, constants, complex values, matrices, and vectors
 
-### Mobile
-
-On narrow screens, the keypad begins hidden. Tap or keyboard-activate the large result display to reveal it, or use the explicit **Show keypad** control. Once displayed, the same control can hide the keypad again. The scientific workspace uses an explicit **Show functions / Hide functions** control instead of an internally scrolling tool list.
-
-### Tablet and desktop
-
-At tablet and desktop widths, all scientific functions remain expanded and the show/hide control is removed. The workspace occupies the left side of the layout, while the utility strip and keypad remain available at the right. This keeps the scientific functions, primary operations, and result display visible together.
-
-### Touch feedback and accessibility
-
-Calculator buttons provide a short press state, a subtle ripple originating from the touch position, optional vibration on supported devices, and a lightweight synthesized tap sound. Non-essential motion is disabled when the browser requests reduced motion. Buttons and the result display retain keyboard focus behavior and accessible labels.
+| Category | Supported feature | Notes |
+| --- | --- | --- |
+| Memory and registers | `M+`, `M−`, `RCL M`, `STO`, `RCL`, `A`–`F`, `X`, `Y` | Memory and named registers persist locally when browser storage is available. |
+| Constants | `π`, `e`, `c`, `h` | The expression scope also exposes `G` for the gravitational constant. |
+| Complex values | `i`, real/imaginary helpers | Math.js complex-number syntax is supported. |
+| Matrices | Visual 2×2 / 3×3 insertion, `det`, `inv` | The visual editor inserts Math.js-ready matrix expressions. |
+| Vectors | 2D / 3D insertion, `dot`, `cross`, addition, subtraction | Cross product is available for 3D vectors. |
 
 ## Keyboard controls
 
@@ -96,71 +123,38 @@ Calculator buttons provide a short press state, a subtle ripple originating from
 | `Delete` or `Escape` | Resets the current expression to `0`; Escape closes history first when it is open. |
 | `Ctrl`/`Cmd` + `L` | Focuses and selects the expression editor. |
 | `Alt` + `S`, `C`, `T`, `O` | Inserts sine, cosine, tangent, or cotangent. |
-| `Alt` + `G` | Cycles angle mode. |
+| `Alt` + `G` | Cycles the angle mode. |
 | `Alt` + `H` | Opens or closes history. |
 | `Alt` + `1`–`4` | Switches to Functions, Memory, Data, or Algebra. |
+
+## Persistence and privacy
+
+When browser local storage is available, the calculator stores its history, statistics data, memory, named variables, theme preference, angle mode, and function-panel visibility locally in the browser. No account or remote data service is required for calculator use.
 
 ## Project structure
 
 ```text
-simple-calculator/
+scientific-calculator/
 ├── client/
-│   ├── index.html                  # Calculator markup and accessible control labels
+│   ├── index.html                  # Calculator markup and accessible controls
 │   └── src/
-│       ├── main.js                 # Application controller, state, actions, and event wiring
-│       ├── scientific-engine.js    # Math.js expression configuration and scientific helpers
-│       ├── styles.css              # CSS composition entrypoint
-│       ├── modules/
-│       │   ├── storage.js          # Safe local-storage helpers
-│       │   ├── history.js          # History rendering and result-copy handling
-│       │   ├── tactile.js          # Ripple, press, vibration, and tap-sound feedback
-│       │   └── README.md           # Short module-boundary reference
-│       └── styles/
-│           ├── theme.css           # Theme tokens, shell, typography, and display surfaces
-│           ├── controls.css        # Buttons, keypad states, focus, and ripple motion
-│           ├── workspace.css       # Scientific tabs, editors, history drawer, and workbench
-│           └── responsive.css      # Phone, landscape, tablet, desktop, and reduced-motion rules
-├── server/                         # Static production-serving compatibility layer
+│       ├── main.js                 # State, actions, and user-interaction wiring
+│       ├── scientific-engine.js    # Math.js scope and scientific helpers
+│       ├── modules/                # Storage, history rendering, tactile feedback
+│       └── styles/                 # Theme, controls, workspace, responsive CSS
+├── server/                         # Production-serving compatibility layer
 ├── package.json                    # Scripts and dependencies
-└── README.md                       # This project documentation
+└── README.md                       # Project documentation
 ```
 
-## Module responsibilities
+## Contributing locally
 
-The project deliberately keeps feature-specific code in small modules while leaving `main.js` as the orchestration layer that owns live calculator state and routes interface actions.
-
-| File | Responsibility |
-| --- | --- |
-| `main.js` | Coordinates state, Math.js evaluation, calculator actions, editor insertion, responsive visibility, and event listeners. |
-| `scientific-engine.js` | Defines the supported expression scope and scientific helper functions. |
-| `modules/storage.js` | Serializes and restores local preferences and calculator data safely. |
-| `modules/history.js` | Renders history rows and provides copy-result feedback. |
-| `modules/tactile.js` | Encapsulates press animation, ripple, vibration, and optional sound feedback. |
-| `styles/*.css` | Separates visual concerns by theme, controls, workspace elements, and responsive behavior. |
-
-## Development
-
-Install dependencies and start the local development server:
+Keep calculator functions in `client/src/scientific-engine.js`, live UI state and action routing in `client/src/main.js`, reusable browser-only behavior in `client/src/modules/`, and focused styling in `client/src/styles/`. Before sharing a change, verify both compact mobile and desktop layouts and run:
 
 ```bash
-pnpm install
-pnpm dev
+npm run build
 ```
 
-Create a production build:
+## References
 
-```bash
-pnpm build
-```
-
-Run the static production server after building:
-
-```bash
-pnpm start
-```
-
-## Maintenance guidelines
-
-Add new calculation functions to `scientific-engine.js` first, then expose them through the relevant scientific tab in `client/index.html`. Keep state-changing UI actions in `main.js`, and place reusable browser-only behavior in `client/src/modules/`. New styles should be added to the most focused file under `client/src/styles/` rather than returning to the CSS entrypoint.
-
-When changing a user-facing flow, verify both compact mobile and desktop layouts. Build the project with `pnpm build` before publishing a revision.
+[1]: https://mathjs.org/ "Math.js documentation"
