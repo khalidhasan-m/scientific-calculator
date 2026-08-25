@@ -1,5 +1,5 @@
 /* Scientific engine: Math.js-backed safe expression evaluation with angle-aware functions and numerical helpers. */
-import { all, create } from 'mathjs';
+import { all, create } from 'https://cdn.jsdelivr.net/npm/mathjs@15.2.0/+esm';
 
 export const math = create(all, { number: 'number', precision: 14, predictable: true });
 

@@ -30,36 +30,14 @@ On compact screens, the keypad remains hidden until the result display or **Show
 
 ## Installation
 
-Use a current Node.js release and npm.
+Clone the repository and open `index.html` in a modern browser. No package installation, build command, or server-side runtime is required.
 
 ```bash
 git clone https://github.com/khalidhasan-m/scientific-calculator.git
 cd scientific-calculator
-npm install
 ```
 
-Start the local development server:
-
-```bash
-npm run dev
-```
-
-Vite prints the local URL after startup. Open that address in a modern browser to use the calculator.
-
-## Commands
-
-| Command | Purpose |
-| --- | --- |
-| `npm run dev` | Starts the Vite development server on all local interfaces. |
-| `npm run build` | Creates an optimized production client bundle in `dist/`. |
-| `npm run preview` | Opens a local Vite preview of the production client build. |
-
-For a production-style local run:
-
-```bash
-npm run build
-npm run preview
-```
+The page loads Tailwind CSS and Math.js directly from their browser CDNs, while all calculator behavior is implemented with local JavaScript and CSS files.
 
 ## Deployment
 
@@ -143,27 +121,20 @@ When browser local storage is available, the calculator stores its history, stat
 
 ```text
 scientific-calculator/
-├── client/
-│   ├── index.html                  # Calculator markup and accessible controls
-│   └── src/
-│       ├── main.js                 # State, actions, and user-interaction wiring
-│       ├── scientific-engine.js    # Math.js scope and scientific helpers
-│       ├── modules/                # Storage, history rendering, tactile feedback
-│       └── styles/                 # Theme, controls, workspace, responsive CSS
+├── index.html                      # Calculator markup and browser module entry point
+├── src/
+│   ├── main.js                     # State, actions, and user-interaction wiring
+│   ├── scientific-engine.js        # Browser-loaded Math.js scope and scientific helpers
+│   ├── modules/                    # Storage, history rendering, tactile feedback
+│   └── styles/                     # Theme, controls, workspace, responsive CSS
 ├── docs/images/                    # Desktop and mobile README screenshots
 ├── .github/workflows/              # GitHub Pages deployment workflow
-├── package.json                    # Scripts and dependencies
-├── vite.config.js                  # Minimal Vite configuration
 └── README.md                       # Project documentation
 ```
 
 ## Contributing locally
 
-Keep calculator functions in `client/src/scientific-engine.js`, live UI state and action routing in `client/src/main.js`, reusable browser-only behavior in `client/src/modules/`, and focused styling in `client/src/styles/`. Before sharing a change, verify both compact mobile and desktop layouts and run:
-
-```bash
-npm run build
-```
+Keep calculator functions in `src/scientific-engine.js`, live UI state and action routing in `src/main.js`, reusable browser-only behavior in `src/modules/`, and focused styling in `src/styles/`. Before sharing a change, verify both compact mobile and desktop layouts in a modern browser.
 
 ## References
 

@@ -1,5 +1,4 @@
 /* Scientific Workspace design: a keyboard-friendly Math.js calculator with a compact glass instrument surface. */
-import './styles.css';
 import { evaluateScientific, formatScientificResult, math } from './scientific-engine.js';
 import { copyHistoryResult, renderHistory } from './modules/history.js';
 import { load, save } from './modules/storage.js';
