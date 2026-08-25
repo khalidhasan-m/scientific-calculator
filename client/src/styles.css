@@ -1,0 +1,5 @@
+/* Scientific Workspace design: composition entrypoint for focused style modules. */
+@import './styles/theme.css';
+@import './styles/controls.css';
+@import './styles/workspace.css';
+@import './styles/responsive.css';

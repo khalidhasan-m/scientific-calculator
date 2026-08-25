@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#05060b" />
+    <title>Scientific Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body>
+    <!-- Scientific Workspace design: iPhone-inspired glass calculator shell with a compact, tabbed advanced-math workbench. -->
+    <main class="app-shell relative flex min-h-screen items-center justify-center overflow-hidden px-4 py-6 sm:px-6">
+      <div aria-hidden="true" class="ambient-a absolute -left-24 top-[-8rem] h-80 w-80 rounded-full blur-[120px]"></div>
+      <div aria-hidden="true" class="ambient-b absolute -bottom-32 -right-20 h-96 w-96 rounded-full blur-[140px]"></div>
+      <div aria-hidden="true" class="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.08),transparent_42%)]"></div>
+
+      <section id="calculator" class="glass-panel relative w-full max-w-[31rem] overflow-hidden rounded-[2.7rem] border px-5 pb-6 pt-5 backdrop-blur-2xl sm:px-6" aria-labelledby="calculator-title">
+        <h1 id="calculator-title" class="sr-only">Scientific Calculator</h1>
+        <div id="calculator-header" class="mb-4 flex items-center justify-between gap-2">
+          <button id="history-toggle" data-action="history" type="button" aria-controls="history-drawer" aria-expanded="false" class="toolbar-button flex h-10 items-center gap-2 rounded-full px-3 text-sm font-medium"><span aria-hidden="true" class="text-lg leading-none">◷</span><span>History</span></button>
+          <div class="flex items-center gap-2"><button id="theme-toggle" data-action="theme" type="button" aria-label="Switch theme" class="toolbar-button grid h-10 w-10 place-items-center rounded-full text-xl"><span id="theme-toggle-icon" aria-hidden="true">☼</span></button></div>
+        </div>
+
+        <div id="display-zone" class="display-zone px-1 pb-3 text-right">
+          <label for="expression-input" class="sr-only">Calculation expression</label>
+          <input id="expression-input" autocomplete="off" autocapitalize="off" spellcheck="false" value="0" class="expression-editor w-full bg-transparent text-right text-sm font-medium muted-text outline-none" aria-label="Type a math expression and press Enter to calculate" />
+          <output id="display" tabindex="0" role="button" aria-live="polite" aria-label="Calculator result. Tap to reveal keypad on mobile." class="display-text mt-3 block overflow-x-auto whitespace-nowrap text-5xl font-light leading-none tracking-[-0.065em] sm:text-6xl">0</output>
+          <div class="mobile-keypad-controls"><p id="mobile-keypad-hint" class="muted-text mt-2 text-xs">Tap the result to reveal the keypad.</p><button id="keypad-toggle" data-action="toggle-keypad" type="button" class="function-toggle mt-2 w-full rounded-xl px-3 py-2 text-xs font-semibold">Hide keypad</button></div>
+        </div>
+
+        <section id="scientific-workbench" class="scientific-workbench mb-4 rounded-3xl p-3" aria-label="Advanced scientific tools">
+          <div class="tool-tabs mb-3 grid grid-cols-4 gap-1" role="tablist" aria-label="Scientific tool categories">
+            <button type="button" data-action="tab-functions" data-tool-tab="functions" class="tool-tab is-active rounded-xl px-2 py-2 text-xs font-medium">Functions</button>
+            <button type="button" data-action="tab-memory" data-tool-tab="memory" class="tool-tab rounded-xl px-2 py-2 text-xs font-medium">Memory</button>
+            <button type="button" data-action="tab-data" data-tool-tab="data" class="tool-tab rounded-xl px-2 py-2 text-xs font-medium">Data</button>
+            <button type="button" data-action="tab-algebra" data-tool-tab="algebra" class="tool-tab rounded-xl px-2 py-2 text-xs font-medium">Algebra</button>
+          </div>
+          <button id="functions-toggle" data-action="toggle-functions" type="button" aria-controls="scientific-function-content" aria-expanded="false" class="function-toggle mb-3 flex w-full items-center justify-between rounded-xl px-3 py-2 text-xs font-semibold"><span id="functions-toggle-label">Show functions</span><span id="functions-toggle-icon" aria-hidden="true">⌄</span></button>
+          <div id="scientific-function-content">
+          <div data-tool-panel="functions" class="tool-panel grid grid-cols-4 gap-2">
+            <button type="button" data-action="angle" id="angle-toggle" class="key scientific-key h-10 rounded-xl text-xs font-semibold">DEG</button><button type="button" data-insert="(" class="key scientific-key h-10 rounded-xl text-lg">(</button><button type="button" data-insert=")" class="key scientific-key h-10 rounded-xl text-lg">)</button><button type="button" data-action="sign" class="key scientific-key h-10 rounded-xl text-lg">±</button>
+            <button type="button" data-insert="sin(" class="key scientific-key h-10 rounded-xl text-sm">sin</button><button type="button" data-insert="cos(" class="key scientific-key h-10 rounded-xl text-sm">cos</button><button type="button" data-insert="tan(" class="key scientific-key h-10 rounded-xl text-sm">tan</button>
+            <button type="button" data-insert="cot(" class="key scientific-key h-10 rounded-xl text-sm">cot</button><button type="button" data-insert="asin(" class="key scientific-key h-10 rounded-xl text-sm">sin⁻¹</button><button type="button" data-insert="acos(" class="key scientific-key h-10 rounded-xl text-sm">cos⁻¹</button><button type="button" data-insert="atan(" class="key scientific-key h-10 rounded-xl text-sm">tan⁻¹</button>
+            <button type="button" data-insert="sinh(" class="key scientific-key h-10 rounded-xl text-sm">sinh</button><button type="button" data-insert="cosh(" class="key scientific-key h-10 rounded-xl text-sm">cosh</button><button type="button" data-insert="tanh(" class="key scientific-key h-10 rounded-xl text-sm">tanh</button><button type="button" data-insert="asinh(" class="key scientific-key h-10 rounded-xl text-sm">sinh⁻¹</button>
+            <button type="button" data-insert="acosh(" class="key scientific-key h-10 rounded-xl text-sm">cosh⁻¹</button><button type="button" data-insert="atanh(" class="key scientific-key h-10 rounded-xl text-sm">tanh⁻¹</button><button type="button" data-insert="log(" class="key scientific-key h-10 rounded-xl text-sm">log</button><button type="button" data-insert="ln(" class="key scientific-key h-10 rounded-xl text-sm">ln</button>
+            <button type="button" data-insert="sqrt(" class="key scientific-key h-10 rounded-xl text-lg">√</button><button type="button" data-insert="nthRoot(" class="key scientific-key h-10 rounded-xl text-sm">ⁿ√</button><button type="button" data-insert="^2" class="key scientific-key h-10 rounded-xl text-sm">x²</button><button type="button" data-insert="^3" class="key scientific-key h-10 rounded-xl text-sm">x³</button>
+            <button type="button" data-insert="^" class="key scientific-key h-10 rounded-xl text-sm">xʸ</button><button type="button" data-insert="^(−1)" class="key scientific-key h-10 rounded-xl text-sm">x⁻¹</button><button type="button" data-insert="10^" class="key scientific-key h-10 rounded-xl text-sm">10ˣ</button><button type="button" data-insert="exp(" class="key scientific-key h-10 rounded-xl text-sm">eˣ</button>
+            <button type="button" data-insert="logBase(" class="key scientific-key h-10 rounded-xl text-sm">logₐ</button><button type="button" data-insert="nPr(" class="key scientific-key h-10 rounded-xl text-sm">nPr</button><button type="button" data-insert="nCr(" class="key scientific-key h-10 rounded-xl text-sm">nCr</button><button type="button" data-insert="!" class="key scientific-key h-10 rounded-xl text-sm">n!</button>
+            <button type="button" data-action="fraction" class="key scientific-key h-10 rounded-xl text-sm">a/b</button>
+            <button type="button" data-insert="abs(" class="key scientific-key h-10 rounded-xl text-sm">Abs</button><button type="button" data-action="random" class="key scientific-key h-10 rounded-xl text-sm">Ran#</button><button type="button" data-action="random-int" class="key scientific-key h-10 rounded-xl text-sm">RanInt</button><button type="button" data-action="engineering" class="key scientific-key h-10 rounded-xl text-sm">ENG</button>
+            <button type="button" data-insert="integral(&quot;x^2&quot;,0,1)" class="key scientific-key h-10 rounded-xl text-sm">∫</button><button type="button" data-insert="diff(&quot;x^2&quot;,2)" class="key scientific-key h-10 rounded-xl text-sm">d/dx</button><button type="button" data-insert="polar(" class="key scientific-key h-10 rounded-xl text-sm">Pol</button><button type="button" data-insert="rect(" class="key scientific-key h-10 rounded-xl text-sm">Rec</button>
+          </div>
+
+          <div data-tool-panel="memory" hidden class="tool-panel grid grid-cols-4 gap-2">
+            <button type="button" data-action="ans" class="key scientific-key h-11 rounded-xl text-sm">Ans</button><button type="button" data-action="memory-add" class="key scientific-key h-11 rounded-xl text-sm">M+</button><button type="button" data-action="memory-subtract" class="key scientific-key h-11 rounded-xl text-sm">M−</button><button type="button" data-action="recall-memory" class="key scientific-key h-11 rounded-xl text-sm">RCL M</button>
+            <select id="variable-select" class="variable-select col-span-2 h-11 rounded-xl px-3 text-sm"><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option><option>X</option><option>Y</option></select>
+            <button type="button" data-action="store-variable" class="key scientific-key h-11 rounded-xl text-sm">STO</button><button type="button" data-action="recall-variable" class="key scientific-key h-11 rounded-xl text-sm">RCL</button>
+            <button type="button" data-action="constant-pi" class="key scientific-key h-10 rounded-xl text-sm">π</button><button type="button" data-action="constant-e" class="key scientific-key h-10 rounded-xl text-sm">e</button><button type="button" data-action="constant-c0" class="key scientific-key h-10 rounded-xl text-sm">c</button><button type="button" data-action="constant-h" class="key scientific-key h-10 rounded-xl text-sm">h</button>
+          </div>
+
+          <div data-tool-panel="data" hidden class="tool-panel space-y-2">
+            <div class="grid grid-cols-4 gap-2"><button type="button" data-action="add-stat" class="key scientific-key h-11 rounded-xl text-sm">Add data</button><button type="button" data-action="stat-mean" class="key scientific-key h-11 rounded-xl text-sm">Mean</button><button type="button" data-action="stat-std" class="key scientific-key h-11 rounded-xl text-sm">σ</button><button type="button" data-action="stat-sum" class="key scientific-key h-11 rounded-xl text-sm">Σ</button></div>
+            <div id="stat-readout" class="stat-readout rounded-xl px-3 py-2 text-xs">No data</div>
+            <div class="grid grid-cols-5 gap-2"><button type="button" data-action="base-DEC" class="key scientific-key h-10 rounded-xl text-xs">DEC</button><button type="button" data-action="base-BIN" class="key scientific-key h-10 rounded-xl text-xs">BIN</button><button type="button" data-action="base-OCT" class="key scientific-key h-10 rounded-xl text-xs">OCT</button><button type="button" data-action="base-HEX" class="key scientific-key h-10 rounded-xl text-xs">HEX</button><button type="button" data-action="clear-stat" class="key scientific-key h-10 rounded-xl text-xs">Clear</button></div>
+          </div>
+
+          <div data-tool-panel="algebra" hidden class="tool-panel space-y-3">
+            <div class="grid grid-cols-4 gap-2"><button type="button" data-insert="i" class="key scientific-key h-10 rounded-xl text-lg">i</button><button type="button" data-insert="complex(" class="key scientific-key h-10 rounded-xl text-sm">a+bi</button><button type="button" data-insert="re(" class="key scientific-key h-10 rounded-xl text-sm">Re</button><button type="button" data-insert="im(" class="key scientific-key h-10 rounded-xl text-sm">Im</button></div>
+            <div class="editor-switcher grid grid-cols-2 gap-1 rounded-xl p-1"><button type="button" data-action="editor-matrix" id="matrix-editor-toggle" class="editor-toggle is-active rounded-lg px-3 py-2 text-xs font-medium">Matrix editor</button><button type="button" data-action="editor-vector" id="vector-editor-toggle" class="editor-toggle rounded-lg px-3 py-2 text-xs font-medium">Vector editor</button></div>
+            <section id="matrix-editor" class="visual-editor rounded-2xl p-3" aria-labelledby="matrix-editor-title">
+              <div class="mb-3 flex items-center justify-between gap-2"><div><h3 id="matrix-editor-title" class="text-sm font-semibold">Matrix input</h3><p class="muted-text mt-0.5 text-xs">Fill cells, then insert or apply an operation.</p></div><select id="matrix-size" class="editor-select rounded-xl px-2 py-2 text-xs" aria-label="Matrix size"><option value="2">2 × 2</option><option value="3">3 × 3</option></select></div>
+              <div class="matrix-bracket"><div id="matrix-grid" class="matrix-grid" aria-label="Matrix values"></div></div>
+              <p id="matrix-preview" class="editor-preview mt-2 truncate text-xs" aria-live="polite"></p>
+              <div class="mt-3 grid grid-cols-3 gap-2"><button type="button" data-action="matrix-insert" class="key scientific-key h-10 rounded-xl text-xs">Insert</button><button type="button" data-action="matrix-det" class="key scientific-key h-10 rounded-xl text-xs">det</button><button type="button" data-action="matrix-inv" class="key scientific-key h-10 rounded-xl text-xs">inv</button></div>
+            </section>
+            <section id="vector-editor" hidden class="visual-editor rounded-2xl p-3" aria-labelledby="vector-editor-title">
+              <div class="mb-3 flex items-center justify-between gap-2"><div><h3 id="vector-editor-title" class="text-sm font-semibold">Vector input</h3><p class="muted-text mt-0.5 text-xs">Set components and insert an operation-ready expression.</p></div><select id="vector-size" class="editor-select rounded-xl px-2 py-2 text-xs" aria-label="Vector dimension"><option value="2">2D</option><option value="3" selected>3D</option></select></div>
+              <div id="vector-grid" class="vector-grid" aria-label="Vector components"></div>
+              <div class="mt-3 grid grid-cols-[1fr_auto] gap-2"><select id="vector-operation" class="editor-select rounded-xl px-3 text-xs" aria-label="Vector operation"><option value="dot">Dot product</option><option value="cross">Cross product</option><option value="add">u + v</option><option value="subtract">u − v</option></select><button type="button" data-action="vector-insert" class="key scientific-key h-10 rounded-xl px-4 text-xs">Insert</button></div>
+              <p id="vector-preview" class="editor-preview mt-2 truncate text-xs" aria-live="polite"></p>
+            </section>
+          </div>
+          </div>
+        </section>
+
+        <div id="utility-strip" class="utility-strip mb-3 grid grid-cols-2 gap-2">
+          <button type="button" data-action="clear" class="key utility-key h-10 rounded-xl text-sm font-medium">AC</button><button type="button" data-action="delete" class="key utility-key h-10 rounded-xl text-sm font-medium">DEL</button>
+        </div>
+        <div id="main-keypad" class="grid grid-cols-4 gap-3" aria-label="Calculator keypad">
+          <button type="button" data-insert="7" class="key number-key aspect-square rounded-full text-[2rem] font-normal">7</button><button type="button" data-insert="8" class="key number-key aspect-square rounded-full text-[2rem] font-normal">8</button><button type="button" data-insert="9" class="key number-key aspect-square rounded-full text-[2rem] font-normal">9</button><button type="button" data-insert="/" class="key operator-key aspect-square rounded-full text-[2rem] font-normal">÷</button>
+          <button type="button" data-insert="4" class="key number-key aspect-square rounded-full text-[2rem] font-normal">4</button><button type="button" data-insert="5" class="key number-key aspect-square rounded-full text-[2rem] font-normal">5</button><button type="button" data-insert="6" class="key number-key aspect-square rounded-full text-[2rem] font-normal">6</button><button type="button" data-insert="*" class="key operator-key aspect-square rounded-full text-[2rem] font-normal">×</button>
+          <button type="button" data-insert="1" class="key number-key aspect-square rounded-full text-[2rem] font-normal">1</button><button type="button" data-insert="2" class="key number-key aspect-square rounded-full text-[2rem] font-normal">2</button><button type="button" data-insert="3" class="key number-key aspect-square rounded-full text-[2rem] font-normal">3</button><button type="button" data-insert="-" class="key operator-key aspect-square rounded-full text-[2rem] font-normal">−</button>
+          <button type="button" data-insert="0" class="key number-key aspect-square rounded-full text-[2rem] font-normal">0</button><button type="button" data-insert="." class="key number-key aspect-square rounded-full text-[2rem] font-normal">.</button><button type="button" data-insert="+" class="key operator-key aspect-square rounded-full text-[2rem] font-normal">+</button><button type="button" data-action="equals" class="key operator-key aspect-square rounded-full text-[2rem] font-normal">=</button>
+        </div>
+        <p class="keyboard-hint muted-text mt-4 text-center text-[11px] font-medium tracking-[0.01em]">Type expressions directly · Enter calculates · Alt+S/C/T/O inserts trig</p>
+        <p id="desktop-shortcuts" class="desktop-shortcuts muted-text mt-4 text-center text-xs">Desktop: Ctrl+L focuses input · Enter evaluates · ⌫ deletes · Alt+1–4 switches tools</p>
+        <p id="status" class="sr-only">Ready</p>
+      </section>
+
+      <div id="history-backdrop" class="history-backdrop fixed inset-0 z-20"></div>
+      <aside id="history-drawer" aria-hidden="true" aria-label="Calculation history" class="history-drawer fixed inset-y-0 right-0 z-30 flex w-full max-w-[23rem] translate-x-full flex-col border-l px-5 pb-6 pt-6 backdrop-blur-2xl sm:px-6">
+        <div class="flex items-center justify-between"><h2 class="text-xl font-semibold tracking-[-0.03em]">History</h2><div class="flex items-center gap-2"><button id="history-clear" type="button" class="toolbar-button h-9 rounded-full px-3 text-sm font-medium">Clear</button><button id="history-close" type="button" aria-label="Close history" class="toolbar-button grid h-9 w-9 place-items-center rounded-full text-xl">×</button></div></div>
+        <p class="muted-text mt-2 text-sm">Tap an item to insert its expression. Press and hold to copy its result.</p>
+        <div id="history-list" class="mt-6 flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto pr-1"></div>
+      </aside>
+    </main>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
