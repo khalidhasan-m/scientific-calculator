@@ -61,6 +61,14 @@ npm run build
 npm run preview
 ```
 
+## Deployment
+
+GitHub Actions builds and deploys this project to **GitHub Pages** whenever changes are pushed to `main`. After the first successful run, the live calculator is available at:
+
+<https://khalidhasan-m.github.io/scientific-calculator/>
+
+The workflow uses the repository-aware Vite base path during GitHub Actions builds, so JavaScript and CSS assets load correctly from the project Pages URL.
+
 ## Using the calculator
 
 Enter an expression with the keypad or the expression editor, then press **=** or `Enter`. The calculator preserves normal arithmetic precedence and supports parentheses. The **AC** key resets the active calculation without deleting saved history. Use the **Clear** action inside the History drawer only when you intend to remove stored history entries.
@@ -142,8 +150,10 @@ scientific-calculator/
 │       ├── scientific-engine.js    # Math.js scope and scientific helpers
 │       ├── modules/                # Storage, history rendering, tactile feedback
 │       └── styles/                 # Theme, controls, workspace, responsive CSS
-├── server/                         # Production-serving compatibility layer
+├── docs/images/                    # Desktop and mobile README screenshots
+├── .github/workflows/              # GitHub Pages deployment workflow
 ├── package.json                    # Scripts and dependencies
+├── vite.config.js                  # Minimal Vite configuration
 └── README.md                       # Project documentation
 ```
 
