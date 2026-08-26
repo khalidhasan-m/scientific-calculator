@@ -274,7 +274,7 @@ function setTab(tab, reveal = false) {
 function setFunctionsVisibility(visible) {
   functionsVisible = visible;
   scientificWorkbench.classList.toggle('functions-collapsed', !visible);
-  functionsToggleLabel.textContent = visible ? 'Hide functions' : 'Show functions';
+  functionsToggleLabel.textContent = visible ? 'Hide function options' : 'More function options';
   functionsToggleIcon.textContent = visible ? '⌃' : '⌄';
   functionsToggle.setAttribute('aria-expanded', String(visible));
   save('scientific-functions-visible', visible);
