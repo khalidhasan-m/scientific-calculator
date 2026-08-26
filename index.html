@@ -24,14 +24,14 @@
         <h1 id="calculator-title" class="sr-only">Scientific Calculator</h1>
         <div id="calculator-header" class="mb-4 flex items-center justify-between gap-2">
           <button id="history-toggle" data-action="history" type="button" aria-controls="history-drawer" aria-expanded="false" class="toolbar-button flex h-10 items-center gap-2 rounded-full px-3 text-sm font-medium"><span aria-hidden="true" class="text-lg leading-none">◷</span><span>History</span></button>
-          <div class="flex items-center gap-2"><button id="theme-toggle" data-action="theme" type="button" aria-label="Switch theme" class="toolbar-button grid h-10 w-10 place-items-center rounded-full text-xl"><span id="theme-toggle-icon" aria-hidden="true">☼</span></button></div>
+          <div class="flex items-center gap-2"><button id="keypad-toggle" data-action="toggle-keypad" type="button" aria-label="Hide keypad" aria-pressed="true" class="header-keypad-toggle toolbar-button grid h-10 w-10 place-items-center rounded-full text-lg" title="Hide keypad"><span id="keypad-toggle-icon" aria-hidden="true">⌨</span></button><button id="theme-toggle" data-action="theme" type="button" aria-label="Switch theme" class="toolbar-button grid h-10 w-10 place-items-center rounded-full text-xl"><span id="theme-toggle-icon" aria-hidden="true">☼</span></button></div>
         </div>
 
         <div id="display-zone" class="display-zone px-1 pb-3 text-right">
           <label for="expression-input" class="sr-only">Calculation expression</label>
           <input id="expression-input" autocomplete="off" autocapitalize="off" spellcheck="false" value="0" class="expression-editor w-full bg-transparent text-right text-sm font-medium muted-text outline-none" aria-label="Type a math expression and press Enter to calculate" />
           <output id="display" tabindex="0" role="button" aria-live="polite" aria-label="Calculator result. Tap to reveal keypad on mobile." class="display-text mt-3 block overflow-x-auto overflow-y-hidden whitespace-nowrap text-5xl font-light leading-none tracking-[-0.065em] sm:text-6xl">0</output>
-          <div class="mobile-keypad-controls"><p id="mobile-keypad-hint" class="muted-text mt-2 text-xs">Tap the result to reveal the keypad.</p><button id="keypad-toggle" data-action="toggle-keypad" type="button" class="function-toggle mt-2 w-full rounded-xl px-3 py-2 text-xs font-semibold">Hide keypad</button></div>
+          <div class="mobile-keypad-controls"><p id="mobile-keypad-hint" class="muted-text mt-2 text-xs">Use ⌨ in the header to hide the keypad.</p></div>
         </div>
 
         <section id="scientific-workbench" class="scientific-workbench mb-4 rounded-3xl p-3" aria-label="Advanced scientific tools">

@@ -14,6 +14,8 @@ const angleToggle = document.querySelector('#angle-toggle');
 const themeToggle = document.querySelector('#theme-toggle');
 const themeToggleIcon = document.querySelector('#theme-toggle-icon');
 const keypadToggle = document.querySelector('#keypad-toggle');
+const keypadToggleIcon = document.querySelector('#keypad-toggle-icon');
+const mobileKeypadHint = document.querySelector('#mobile-keypad-hint');
 const historyToggle = document.querySelector('#history-toggle');
 const historyDrawer = document.querySelector('#history-drawer');
 const historyBackdrop = document.querySelector('#history-backdrop');
@@ -282,7 +284,10 @@ function setKeypadVisibility(visible) {
   keypadVisible = visible;
   calculator.classList.toggle('mobile-keypad-hidden', compactViewport.matches && !visible);
   keypadToggle.setAttribute('aria-pressed', String(visible));
-  keypadToggle.textContent = visible ? 'Hide keypad' : 'Show keypad';
+  keypadToggle.setAttribute('aria-label', visible ? 'Hide keypad' : 'Show keypad');
+  keypadToggle.title = visible ? 'Hide keypad' : 'Show keypad';
+  keypadToggleIcon.textContent = '⌨';
+  mobileKeypadHint.textContent = visible ? 'Use ⌨ in the header to hide the keypad.' : 'Tap the result or ⌨ to show the keypad.';
 }
 
 function revealMobileKeypad() {
