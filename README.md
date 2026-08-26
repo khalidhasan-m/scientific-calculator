@@ -12,9 +12,9 @@ The desktop workspace keeps the expression display, the full scientific-function
 
 ### Compact mobile workspace
 
-![Compact mobile calculator showing the History control, result display, Show keypad button, and Show functions control.](https://raw.githubusercontent.com/khalidhasan-m/scientific-calculator/main/docs/images/mobile-workspace.png)
+![Compact mobile calculator showing the History control, header keyboard toggle, result display, and More function options control.](https://raw.githubusercontent.com/khalidhasan-m/scientific-calculator/main/docs/images/mobile-workspace.png)
 
-On compact screens, the keypad remains hidden until the result display or **Show keypad** control is used. This leaves the scientific workspace reachable without crowding the initial view.
+On portrait phones and tablets, the header **⌨** control makes calculator-keypad state clear: an orange highlight and white status dot mean it is on, while the neutral control means it is off. The **More function options** control reveals three Function rows at a time; the remaining rows stay available by scrolling that panel. When a text-entry field opens the device system keyboard, the calculator keypad hides automatically. Activating the calculator keypad dismisses the device keyboard.
 
 ## Highlights
 
@@ -27,7 +27,7 @@ On compact screens, the keypad remains hidden until the result display or **Show
 | Algebra | Complex values and visual 2×2 / 3×3 matrix and 2D / 3D vector editors. |
 | Conversions | Offline temperature and length conversions plus on-demand live currency quotes with session fallback. |
 | History | Browser-persisted calculation tape; tap an entry to restore its expression or press and hold to copy its result. |
-| Responsive interaction | Display-triggered mobile keypad, a compact scientific toggle, desktop keyboard shortcuts, and light/dark themes. |
+| Responsive interaction | Header-controlled mobile keypad with visible state, scrollable three-row portrait Function options, desktop keyboard shortcuts, and light/dark themes. |
 
 ## Installation
 
