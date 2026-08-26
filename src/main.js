@@ -465,10 +465,20 @@ function insertHistory(entry) {
   toggleHistory(false);
 }
 
+function isEditableField(target) {
+  return target instanceof Element && Boolean(target.closest('input, textarea, [contenteditable="true"]'));
+}
+
+document.addEventListener('pointerdown', (event) => {
+  const target = event.target instanceof Element ? event.target : null;
+  if (!compactViewport.matches || !target || isEditableField(target) || target.closest('#display')) return;
+  const active = document.activeElement;
+  if (active instanceof HTMLInputElement || active instanceof HTMLTextAreaElement || active instanceof HTMLSelectElement) active.blur();
+}, true);
+
 calculator.addEventListener('pointerdown', (event) => {
   const control = event.target.closest('button, select');
   if (!control) return;
-  if (compactViewport.matches && document.activeElement === expressionInput) expressionInput.blur();
   addTactileFeedback(control, event);
 });
 
