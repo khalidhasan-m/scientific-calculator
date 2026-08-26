@@ -25,6 +25,7 @@ On compact screens, the keypad remains hidden until the result display or **Show
 | Memory and constants | `Ans`, memory register `M`, named registers `A`–`F`, `X`, `Y`, and physical constants. |
 | Data and bases | Mean, standard deviation, summation, plus DEC, BIN, OCT, and HEX output modes. |
 | Algebra | Complex values and visual 2×2 / 3×3 matrix and 2D / 3D vector editors. |
+| Conversions | Offline temperature and length conversions plus on-demand live currency quotes with session fallback. |
 | History | Browser-persisted calculation tape; tap an entry to restore its expression or press and hold to copy its result. |
 | Responsive interaction | Display-triggered mobile keypad, a compact scientific toggle, desktop keyboard shortcuts, and light/dark themes. |
 
@@ -41,17 +42,23 @@ The page loads Tailwind CSS and Math.js directly from their browser CDNs, while 
 
 ## Deployment
 
-GitHub Actions builds and deploys this project to **GitHub Pages** whenever changes are pushed to `main`. After the first successful run, the live calculator is available at:
+GitHub Actions deploys this static project to **GitHub Pages** whenever changes are pushed to `main`. After the first successful run, the live calculator is available at:
 
 <https://khalidhasan-m.github.io/scientific-calculator/>
 
-The workflow uses the repository-aware Vite base path during GitHub Actions builds, so JavaScript and CSS assets load correctly from the project Pages URL.
+The workflow publishes the root static site, so the page and its browser modules load correctly from the project Pages URL.
 
 ## Using the calculator
 
 Enter an expression with the keypad or the expression editor, then press **=** or `Enter`. The calculator preserves normal arithmetic precedence and supports parentheses. The **AC** key resets the active calculation without deleting saved history. Use the **Clear** action inside the History drawer only when you intend to remove stored history entries.
 
 > **History gestures:** Tap a history row to restore the original expression. Press and hold the same row to copy only its result.
+
+## Unit conversions
+
+Open the **Convert** workspace tab to convert temperature, length, or currency. Temperature supports Celsius, Fahrenheit, and Kelvin. Length supports metres, kilometres, centimetres, miles, feet, and inches. These two converters run entirely in the browser.
+
+Currency conversion supports USD, EUR, GBP, JPY, CAD, AUD, BDT, and INR. It fetches the selected pair’s latest available quote when the page opens or a pair changes. The displayed rate date identifies the quoted reference date. If a refresh fails during the same browser session, the converter continues with the most recently retrieved matching quote and labels it as cached.
 
 ## Supported scientific functions
 
@@ -111,11 +118,11 @@ The table below documents the built-in controls and expression helpers available
 | `Alt` + `S`, `C`, `T`, `O` | Inserts sine, cosine, tangent, or cotangent. |
 | `Alt` + `G` | Cycles the angle mode. |
 | `Alt` + `H` | Opens or closes history. |
-| `Alt` + `1`–`4` | Switches to Functions, Memory, Data, or Algebra. |
+| `Alt` + `1`–`5` | Switches to Functions, Memory, Data, Algebra, or Convert. |
 
 ## Persistence and privacy
 
-When browser local storage is available, the calculator stores its history, statistics data, memory, named variables, theme preference, angle mode, and function-panel visibility locally in the browser. No account or remote data service is required for calculator use.
+When browser local storage is available, the calculator stores its history, statistics data, memory, named variables, theme preference, angle mode, and function-panel visibility locally in the browser. The live currency quote is retained only for the current browser session as a short-term offline fallback. No account is required for calculator use.
 
 ## Project structure
 

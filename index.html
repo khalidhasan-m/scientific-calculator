@@ -30,11 +30,12 @@
         </div>
 
         <section id="scientific-workbench" class="scientific-workbench mb-4 rounded-3xl p-3" aria-label="Advanced scientific tools">
-          <div class="tool-tabs mb-3 grid grid-cols-4 gap-1" role="tablist" aria-label="Scientific tool categories">
-            <button type="button" data-action="tab-functions" data-tool-tab="functions" class="tool-tab is-active rounded-xl px-2 py-2 text-xs font-medium">Functions</button>
-            <button type="button" data-action="tab-memory" data-tool-tab="memory" class="tool-tab rounded-xl px-2 py-2 text-xs font-medium">Memory</button>
-            <button type="button" data-action="tab-data" data-tool-tab="data" class="tool-tab rounded-xl px-2 py-2 text-xs font-medium">Data</button>
-            <button type="button" data-action="tab-algebra" data-tool-tab="algebra" class="tool-tab rounded-xl px-2 py-2 text-xs font-medium">Algebra</button>
+          <div class="tool-tabs mb-3 grid grid-cols-5 gap-1" role="tablist" aria-label="Scientific tool categories">
+            <button type="button" data-action="tab-functions" data-tool-tab="functions" class="tool-tab is-active rounded-xl px-1 py-2 text-[11px] font-medium">Functions</button>
+            <button type="button" data-action="tab-memory" data-tool-tab="memory" class="tool-tab rounded-xl px-1 py-2 text-[11px] font-medium">Memory</button>
+            <button type="button" data-action="tab-data" data-tool-tab="data" class="tool-tab rounded-xl px-1 py-2 text-[11px] font-medium">Data</button>
+            <button type="button" data-action="tab-algebra" data-tool-tab="algebra" class="tool-tab rounded-xl px-1 py-2 text-[11px] font-medium">Algebra</button>
+            <button type="button" data-action="tab-convert" data-tool-tab="convert" class="tool-tab rounded-xl px-1 py-2 text-[11px] font-medium">Convert</button>
           </div>
           <button id="functions-toggle" data-action="toggle-functions" type="button" aria-controls="scientific-function-content" aria-expanded="false" class="function-toggle mb-3 flex w-full items-center justify-between rounded-xl px-3 py-2 text-xs font-semibold"><span id="functions-toggle-label">Show functions</span><span id="functions-toggle-icon" aria-hidden="true">⌄</span></button>
           <div id="scientific-function-content">
@@ -81,6 +82,22 @@
               <p id="vector-preview" class="editor-preview mt-2 truncate text-xs" aria-live="polite"></p>
             </section>
           </div>
+          <div data-tool-panel="convert" hidden class="tool-panel space-y-3" aria-label="Unit conversion tools">
+            <div class="converter-heading"><div><h3 class="text-sm font-semibold">Conversions</h3><p class="muted-text mt-0.5 text-xs">Temperature and length work offline. Currency updates from live rates.</p></div><span class="converter-badge">LIVE</span></div>
+            <section class="converter-card rounded-2xl p-3" aria-labelledby="temperature-converter-title">
+              <div class="converter-card-heading"><h4 id="temperature-converter-title">Temperature</h4><output id="temperature-result" class="converter-result" aria-live="polite">32 °F</output></div>
+              <div class="converter-grid mt-3"><input id="temperature-value" class="converter-input" type="number" inputmode="decimal" value="0" aria-label="Temperature value" /><select id="temperature-from" class="editor-select converter-select" aria-label="Convert temperature from"><option value="C">°C</option><option value="F">°F</option><option value="K">K</option></select><span class="converter-arrow" aria-hidden="true">→</span><select id="temperature-to" class="editor-select converter-select" aria-label="Convert temperature to"><option value="C">°C</option><option value="F" selected>°F</option><option value="K">K</option></select></div>
+            </section>
+            <section class="converter-card rounded-2xl p-3" aria-labelledby="length-converter-title">
+              <div class="converter-card-heading"><h4 id="length-converter-title">Length</h4><output id="length-result" class="converter-result" aria-live="polite">3.281 ft</output></div>
+              <div class="converter-grid mt-3"><input id="length-value" class="converter-input" type="number" inputmode="decimal" value="1" aria-label="Length value" /><select id="length-from" class="editor-select converter-select" aria-label="Convert length from"><option value="m">m</option><option value="km">km</option><option value="cm">cm</option><option value="mi">mi</option><option value="ft">ft</option><option value="in">in</option></select><span class="converter-arrow" aria-hidden="true">→</span><select id="length-to" class="editor-select converter-select" aria-label="Convert length to"><option value="m">m</option><option value="km">km</option><option value="cm">cm</option><option value="mi">mi</option><option value="ft" selected>ft</option><option value="in">in</option></select></div>
+            </section>
+            <section class="converter-card rounded-2xl p-3" aria-labelledby="currency-converter-title">
+              <div class="converter-card-heading"><div><h4 id="currency-converter-title">Currency</h4><p id="currency-rate-status" class="muted-text mt-0.5 text-[11px]" aria-live="polite">Fetching live rate…</p></div><output id="currency-result" class="converter-result" aria-live="polite">—</output></div>
+              <div class="converter-grid mt-3"><input id="currency-value" class="converter-input" type="number" inputmode="decimal" min="0" step="any" value="1" aria-label="Currency amount" /><select id="currency-from" class="editor-select converter-select" aria-label="Convert currency from"><option value="USD" selected>USD</option><option value="EUR">EUR</option><option value="GBP">GBP</option><option value="JPY">JPY</option><option value="CAD">CAD</option><option value="AUD">AUD</option><option value="BDT">BDT</option><option value="INR">INR</option></select><span class="converter-arrow" aria-hidden="true">→</span><select id="currency-to" class="editor-select converter-select" aria-label="Convert currency to"><option value="USD">USD</option><option value="EUR" selected>EUR</option><option value="GBP">GBP</option><option value="JPY">JPY</option><option value="CAD">CAD</option><option value="AUD">AUD</option><option value="BDT">BDT</option><option value="INR">INR</option></select></div>
+              <button type="button" data-action="currency-refresh" id="currency-refresh" class="function-toggle mt-3 flex w-full items-center justify-between rounded-xl px-3 py-2 text-xs font-semibold"><span>Refresh live rate</span><span aria-hidden="true">↻</span></button>
+            </section>
+          </div>
           </div>
         </section>
 
@@ -94,7 +111,7 @@
           <button type="button" data-insert="0" class="key number-key aspect-square rounded-full text-[2rem] font-normal">0</button><button type="button" data-insert="." class="key number-key aspect-square rounded-full text-[2rem] font-normal">.</button><button type="button" data-insert="+" class="key operator-key aspect-square rounded-full text-[2rem] font-normal">+</button><button type="button" data-action="equals" class="key operator-key aspect-square rounded-full text-[2rem] font-normal">=</button>
         </div>
         <p class="keyboard-hint muted-text mt-4 text-center text-[11px] font-medium tracking-[0.01em]">Type expressions directly · Enter calculates · Alt+S/C/T/O inserts trig</p>
-        <p id="desktop-shortcuts" class="desktop-shortcuts muted-text mt-4 text-center text-xs">Desktop: Ctrl+L focuses input · Enter evaluates · ⌫ deletes · Alt+1–4 switches tools</p>
+        <p id="desktop-shortcuts" class="desktop-shortcuts muted-text mt-4 text-center text-xs">Desktop: Ctrl+L focuses input · Enter evaluates · ⌫ deletes · Alt+1–5 switches tools</p>
         <p id="status" class="sr-only">Ready</p>
       </section>
 

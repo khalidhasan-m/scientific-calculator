@@ -1,5 +1,6 @@
 /* Scientific Workspace design: a keyboard-friendly Math.js calculator with a compact glass instrument surface. */
 import { evaluateScientific, formatScientificResult, math } from './scientific-engine.js';
+import { convertLength, convertTemperature, fetchCurrencyQuote, formatConvertedValue, formatCurrencyValue } from './modules/conversions.js';
 import { copyHistoryResult, renderHistory } from './modules/history.js';
 import { load, save } from './modules/storage.js';
 import { addTactileFeedback } from './modules/tactile.js';
@@ -36,6 +37,20 @@ const matrixGrid = document.querySelector('#matrix-grid');
 const vectorGrid = document.querySelector('#vector-grid');
 const matrixPreview = document.querySelector('#matrix-preview');
 const vectorPreview = document.querySelector('#vector-preview');
+const temperatureValue = document.querySelector('#temperature-value');
+const temperatureFrom = document.querySelector('#temperature-from');
+const temperatureTo = document.querySelector('#temperature-to');
+const temperatureResult = document.querySelector('#temperature-result');
+const lengthValue = document.querySelector('#length-value');
+const lengthFrom = document.querySelector('#length-from');
+const lengthTo = document.querySelector('#length-to');
+const lengthResult = document.querySelector('#length-result');
+const currencyValue = document.querySelector('#currency-value');
+const currencyFrom = document.querySelector('#currency-from');
+const currencyTo = document.querySelector('#currency-to');
+const currencyResult = document.querySelector('#currency-result');
+const currencyRateStatus = document.querySelector('#currency-rate-status');
+const currencyRefresh = document.querySelector('#currency-refresh');
 
 const registerNames = ['A', 'B', 'C', 'D', 'E', 'F', 'X', 'Y'];
 let answer = 0;
@@ -53,6 +68,7 @@ let matrixDimension = 2;
 let vectorDimension = 3;
 let editorMode = 'matrix';
 let functionsVisible = false;
+let currencyQuote;
 let historyHoldTimer;
 let historyHoldTriggered = false;
 const compactViewport = window.matchMedia('(max-width: 640px)');
@@ -89,6 +105,55 @@ function renderStats() {
   const mean = math.mean(statsData);
   const deviation = statsData.length > 1 ? math.std(statsData) : 0;
   statReadout.textContent = `n=${statsData.length} · x̄=${math.format(mean, { precision: 7 })} · σ=${math.format(deviation, { precision: 7 })}`;
+}
+
+function converterNumber(input) {
+  const value = Number(input.value);
+  return Number.isFinite(value) ? value : 0;
+}
+
+function renderTemperatureConversion() {
+  const result = convertTemperature(converterNumber(temperatureValue), temperatureFrom.value, temperatureTo.value);
+  temperatureResult.textContent = `${formatConvertedValue(result)} ${temperatureTo.options[temperatureTo.selectedIndex].text}`;
+}
+
+function renderLengthConversion() {
+  const result = convertLength(converterNumber(lengthValue), lengthFrom.value, lengthTo.value);
+  lengthResult.textContent = `${formatConvertedValue(result)} ${lengthTo.value}`;
+}
+
+function renderCurrencyConversion() {
+  if (!currencyQuote || currencyQuote.from !== currencyFrom.value || currencyQuote.to !== currencyTo.value) return;
+  const result = converterNumber(currencyValue) * currencyQuote.rate;
+  currencyResult.textContent = formatCurrencyValue(result, currencyQuote.to);
+  currencyRateStatus.textContent = `${formatConvertedValue(currencyQuote.rate, 8)} ${currencyQuote.to} per ${currencyQuote.from} · ${currencyQuote.date}`;
+}
+
+async function refreshCurrencyQuote() {
+  const from = currencyFrom.value;
+  const to = currencyTo.value;
+  currencyRefresh.disabled = true;
+  currencyRateStatus.textContent = 'Refreshing live rate…';
+  try {
+    const quote = await fetchCurrencyQuote(from, to);
+    currencyQuote = quote;
+    try { sessionStorage.setItem('scientific-currency-quote', JSON.stringify(quote)); } catch {}
+    renderCurrencyConversion();
+    setStatus(`Live ${from} to ${to} rate updated`);
+  } catch (error) {
+    const cached = currencyQuote && currencyQuote.from === from && currencyQuote.to === to ? currencyQuote : null;
+    if (cached) {
+      renderCurrencyConversion();
+      currencyRateStatus.textContent = `Using cached rate · ${cached.date}`;
+      setStatus('Live rate unavailable; cached rate shown');
+    } else {
+      currencyResult.textContent = 'Unavailable';
+      currencyRateStatus.textContent = 'Unable to refresh live rate. Check your connection.';
+      setStatus(error.message || 'Currency rate unavailable');
+    }
+  } finally {
+    currencyRefresh.disabled = false;
+  }
 }
 
 function addHistory(expression, result) {
@@ -388,6 +453,7 @@ function performAction(action) {
     if (action === 'matrix-det') return insertMatrix('det');
     if (action === 'matrix-inv') return insertMatrix('inv');
     if (action === 'vector-insert') return insertVector();
+    if (action === 'currency-refresh') return refreshCurrencyQuote();
   } catch (error) {
     setStatus(error.message || 'This action needs a real numeric value');
   }
@@ -477,7 +543,7 @@ document.addEventListener('keydown', (event) => {
       if (event.code === 'KeyH') return toggleHistory();
       if (event.code === 'KeyM') return performAction('mode');
       if (event.code === 'KeyG') return performAction('angle');
-      if (event.code.startsWith('Digit')) return setTab(['functions', 'memory', 'data', 'algebra'][Number(event.code.at(-1)) - 1], true);
+      if (event.code.startsWith('Digit')) return setTab(['functions', 'memory', 'data', 'algebra', 'convert'][Number(event.code.at(-1)) - 1], true);
       return insertToken(shortcuts[event.code]);
     }
   }
@@ -497,6 +563,7 @@ memory = load('scientific-memory', 0);
 variables = { ...variables, ...load('scientific-variables', {}) };
 angleMode = load('scientific-angle', 'DEG');
 functionsVisible = load('scientific-functions-visible', !window.matchMedia('(max-width: 640px)').matches);
+try { currencyQuote = JSON.parse(sessionStorage.getItem('scientific-currency-quote')) || undefined; } catch { currencyQuote = undefined; }
 matrixDimension = Number(matrixSize.value);
 vectorDimension = Number(vectorSize.value);
 updateTheme(load('scientific-theme', 'dark'));
@@ -511,7 +578,17 @@ renderMatrixEditor();
 renderVectorEditor();
 setEditorMode(editorMode);
 renderResult(0);
+renderTemperatureConversion();
+renderLengthConversion();
+if (currencyQuote && currencyQuote.from === currencyFrom.value && currencyQuote.to === currencyTo.value) renderCurrencyConversion();
+else refreshCurrencyQuote();
 
 matrixSize.addEventListener('change', () => { matrixDimension = Number(matrixSize.value); renderMatrixEditor(); });
 vectorSize.addEventListener('change', () => { vectorDimension = Number(vectorSize.value); renderVectorEditor(); });
+[[temperatureValue, temperatureFrom, temperatureTo], [lengthValue, lengthFrom, lengthTo]].forEach((controls, index) => controls.forEach((control) => {
+  control.addEventListener('input', index === 0 ? renderTemperatureConversion : renderLengthConversion);
+  control.addEventListener('change', index === 0 ? renderTemperatureConversion : renderLengthConversion);
+}));
+currencyValue.addEventListener('input', renderCurrencyConversion);
+[currencyFrom, currencyTo].forEach((control) => control.addEventListener('change', refreshCurrencyQuote));
 compactViewport.addEventListener('change', (event) => setKeypadVisibility(!event.matches));
