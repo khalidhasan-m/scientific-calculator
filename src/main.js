@@ -528,6 +528,8 @@ display.addEventListener('keydown', (event) => {
 });
 
 document.addEventListener('keydown', (event) => {
+  const editableControl = event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement || event.target instanceof HTMLSelectElement;
+  if (editableControl && event.target !== expressionInput) return;
   if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'l') {
     event.preventDefault();
     expressionInput.focus();
