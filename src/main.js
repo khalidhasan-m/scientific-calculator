@@ -280,22 +280,30 @@ function setFunctionsVisibility(visible) {
   save('scientific-functions-visible', visible);
 }
 
-function setKeypadVisibility(visible) {
+function dismissDeviceKeyboard() {
+  const active = document.activeElement;
+  if (active instanceof HTMLInputElement || active instanceof HTMLTextAreaElement || active instanceof HTMLSelectElement) active.blur();
+}
+
+function setKeypadVisibility(visible, { dismissSystemKeyboard = true } = {}) {
   keypadVisible = visible;
   calculator.classList.toggle('mobile-keypad-hidden', compactViewport.matches && !visible);
   keypadToggle.setAttribute('aria-pressed', String(visible));
-  keypadToggle.setAttribute('aria-label', visible ? 'Hide keypad' : 'Show keypad');
-  keypadToggle.title = visible ? 'Hide keypad' : 'Show keypad';
+  keypadToggle.classList.toggle('is-keypad-active', visible);
+  keypadToggle.dataset.keypadState = visible ? 'on' : 'off';
+  keypadToggle.setAttribute('aria-label', visible ? 'Calculator keypad is on. Tap to hide it.' : 'Calculator keypad is off. Tap to show it.');
+  keypadToggle.title = visible ? 'Calculator keypad on — tap to hide' : 'Calculator keypad off — tap to show';
   keypadToggleIcon.textContent = '⌨';
-  mobileKeypadHint.textContent = visible ? 'Use ⌨ in the header to hide the keypad.' : 'Tap the result or ⌨ to show the keypad.';
+  mobileKeypadHint.textContent = visible ? 'Calculator keypad is on. Tap ⌨ to hide it.' : 'Tap ⌨ in the header to show the calculator keypad.';
+  if (visible && compactViewport.matches && dismissSystemKeyboard) dismissDeviceKeyboard();
 }
 
-function revealMobileKeypad() {
-  if (compactViewport.matches) setKeypadVisibility(true);
+function prepareDeviceTextEntry() {
+  if (compactViewport.matches) setKeypadVisibility(false, { dismissSystemKeyboard: false });
 }
 
 function focusExpressionFromDisplay() {
-  revealMobileKeypad();
+  prepareDeviceTextEntry();
   if (!compactViewport.matches) return;
   requestAnimationFrame(() => {
     expressionInput.focus();
@@ -481,6 +489,10 @@ document.addEventListener('pointerdown', (event) => {
   if (active instanceof HTMLInputElement || active instanceof HTMLTextAreaElement || active instanceof HTMLSelectElement) active.blur();
 }, true);
 
+calculator.addEventListener('focusin', (event) => {
+  if (compactViewport.matches && isEditableField(event.target)) setKeypadVisibility(false, { dismissSystemKeyboard: false });
+});
+
 calculator.addEventListener('pointerdown', (event) => {
   const control = event.target.closest('button, select');
   if (!control) return;
@@ -536,7 +548,7 @@ expressionInput.addEventListener('keydown', (event) => {
   if (!event.altKey && event.key === 'x') { event.preventDefault(); insertToken('*'); }
   if (!event.altKey && event.key === '÷') { event.preventDefault(); insertToken('/'); }
 });
-expressionInput.addEventListener('focus', revealMobileKeypad);
+expressionInput.addEventListener('focus', prepareDeviceTextEntry);
 display.addEventListener('click', focusExpressionFromDisplay);
 display.addEventListener('keydown', (event) => {
   if (['Enter', ' '].includes(event.key)) { event.preventDefault(); focusExpressionFromDisplay(); }
